@@ -1,20 +1,23 @@
 const PORT = process.env.PORT || 3000
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'MyApp'
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME
+
+const IS_VERCEL_PROD_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+const IS_VERCEL_PREVIEW_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
 
 export const SHORT_DOMAIN =
 	process.env.NEXT_PUBLIC_APP_SHORT_DOMAIN || `localhost:${PORT}`
 
-export const HOME_DOMAIN = `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`
+export const HOME_DOMAIN =
+	IS_VERCEL_PROD_ENV || IS_VERCEL_PREVIEW_ENV
+		? `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`
+		: `http://${process.env.NEXT_PUBLIC_APP_DOMAIN}`
 
 export const APP_HOSTNAMES = new Set([
 	`app.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
 	`preview.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
 	`app.localhost:${PORT}`,
 ])
-
-const IS_VERCEL_PROD_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-const IS_VERCEL_PREVIEW_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
 
 export const APP_DOMAIN = IS_VERCEL_PROD_ENV
 	? `https://app.${process.env.NEXT_PUBLIC_APP_DOMAIN}`
