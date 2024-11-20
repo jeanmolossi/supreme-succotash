@@ -1,7 +1,7 @@
 'use client'
 
 import { OnboardingStep } from '@/lib/onboarding/types'
-import { Button, ButtonProps } from '@repo/ui'
+import { Button, ButtonProps } from '@local/ui'
 // import { LoaderCircle } from 'lucide-react'
 
 export function NextButton({

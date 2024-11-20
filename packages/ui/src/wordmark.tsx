@@ -1,4 +1,4 @@
-import { cn } from '@repo/utils'
+import { cn } from '@local/utils'
 
 export function Wordmark({ className, ...props }: { className?: string }) {
 	return (

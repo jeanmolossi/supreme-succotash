@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui"
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@local/ui"
 import { ArrowRightCircle } from "lucide-react"
 import Image from "next/image"
 

@@ -1,4 +1,4 @@
-import { HOME_DOMAIN } from '@repo/utils'
+import { HOME_DOMAIN } from '@local/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { parse } from './helpers'
 

@@ -4,7 +4,7 @@ import { User } from '@/lib/drizzle/types'
 import { db } from '@/lib/drizzle/db'
 import { users } from '@/lib/drizzle/user.schema'
 import { eq } from 'drizzle-orm'
-import { getSearchParams } from '@repo/utils'
+import { getSearchParams } from '@local/utils'
 
 interface WithSessionHandler {
 	({

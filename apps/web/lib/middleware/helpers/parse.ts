@@ -1,4 +1,4 @@
-import { SHORT_DOMAIN } from '@repo/utils'
+import { SHORT_DOMAIN } from '@local/utils'
 import { NextRequest } from 'next/server'
 
 const LOCAL_APP_DOMAIN = 'myapp.localhost:3000'

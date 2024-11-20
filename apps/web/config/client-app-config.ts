@@ -1,4 +1,4 @@
-import { APP_NAME } from '@repo/utils'
+import { APP_NAME } from '@local/utils'
 
 const clientAppConfig = {
 	URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,

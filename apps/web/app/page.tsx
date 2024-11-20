@@ -5,7 +5,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@repo/ui'
+} from '@local/ui'
 import { ArrowRightCircle } from 'lucide-react'
 import Image from 'next/image'
 import type { JSX } from 'react'

@@ -1,4 +1,4 @@
-import { API_HOSTNAMES, APP_HOSTNAMES, LP_HOSTNAMES } from '@repo/utils'
+import { API_HOSTNAMES, APP_HOSTNAMES, LP_HOSTNAMES } from '@local/utils'
 import { NextResponse, type NextRequest } from 'next/server'
 import ApiMiddleware from '@/lib/middleware/api'
 import AppMiddleware from '@/lib/middleware/app'

@@ -1,4 +1,4 @@
-import { Wordmark } from '@repo/ui'
+import { Wordmark } from '@local/ui'
 import clientAppConfig from '@/config/client-app-config'
 import { NextButton } from '../next-button'
 

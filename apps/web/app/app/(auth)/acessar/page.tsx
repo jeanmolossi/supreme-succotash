@@ -1,4 +1,4 @@
-import { Button } from '@repo/ui'
+import { Button } from '@local/ui'
 import Link from 'next/link'
 import LoginForm from './form'
 import { AuthLayout } from '@/components/layout/auth-layout'

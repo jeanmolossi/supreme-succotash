@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui"
+import { Card, CardDescription, CardHeader, CardTitle } from "@local/ui"
 
 import type { JSX } from "react";
 

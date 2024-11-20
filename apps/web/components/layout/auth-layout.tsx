@@ -1,4 +1,4 @@
-import { HOME_DOMAIN } from '@repo/utils'
+import { HOME_DOMAIN } from '@local/utils'
 import { PropsWithChildren } from 'react'
 
 const APP_COPYRIGHTS = 'Your app Copy'

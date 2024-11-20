@@ -2,7 +2,7 @@
 
 import grid from '@/assets/welcome-background-grid.svg'
 import bg from '@/assets/welcome-background.svg'
-import { cn } from '@repo/utils'
+import { cn } from '@local/utils'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'

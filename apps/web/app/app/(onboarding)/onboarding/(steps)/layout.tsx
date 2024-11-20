@@ -1,4 +1,4 @@
-import { Wordmark } from '@repo/ui'
+import { Wordmark } from '@local/ui'
 import { PropsWithChildren } from 'react'
 
 export default function Layout({ children }: PropsWithChildren) {

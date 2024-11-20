@@ -1,4 +1,4 @@
-import { HOME_DOMAIN, cn } from '@repo/utils'
+import { HOME_DOMAIN, cn } from '@local/utils'
 import Image, { ImageProps } from 'next/image'
 import { useEffect, useState } from 'react'
 

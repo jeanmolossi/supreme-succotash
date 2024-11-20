@@ -2,8 +2,8 @@
 
 import GoogleIcon from '@/components/icons/google'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@repo/ui'
-import { APP_DOMAIN } from '@repo/utils'
+import { Button } from '@local/ui'
+import { APP_DOMAIN } from '@local/utils'
 
 export default function GoogleButton() {
 	const handleLogin = async () => {

@@ -1,5 +1,5 @@
 {
-	"extends": "@repo/ts-config/nextjs.json",
+	"extends": "@local/ts-config/nextjs.json",
 	"compilerOptions": {
 		"target": "ESNext",
 		"lib": ["dom", "dom.iterable", "esnext"],
