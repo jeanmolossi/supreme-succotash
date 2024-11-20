@@ -27,11 +27,12 @@ export default function Welcome() {
 			</h1>
 
 			<p className="animate-slide-up-fade mt-2 text-gray-500 [--offset:10px] [animation-delay:500ms] [animation-duration:1s] [animation-fill-mode:both]">
-				Uma descricao de boas vindas
+				Vamos começar a gestão do dinheiro da sua família, juntos! Para
+				isso, vamos configurar sua conta
 			</p>
 
 			<div className="animate-slide-up-fade mt-10 w-full [--offset:10px] [animation-delay:750ms] [animation-duration:1s] [animation-fill-mode:both]">
-				<NextButton step="finalizado" />
+				<NextButton step="familia" />
 			</div>
 		</div>
 	)
