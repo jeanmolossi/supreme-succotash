@@ -1,5 +1,6 @@
 import serverAppConfig from '@/config/server-app-config'
 import { createClient } from '@/lib/supabase/server'
+import { APP_DOMAIN } from '@local/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 const X_FORWARDED_HOST = 'x-forwarded-host'
@@ -10,19 +11,21 @@ export async function GET(request: NextRequest) {
 	const redirTo = searchParams.get('redir_to') || '/' // next é a url de redirect (quando existe usamos ela)
 
 	if (!code) {
+		console.error('failed to retrieve code')
 		return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 	}
 
 	const supabase = await createClient()
 	const { error } = await supabase.auth.exchangeCodeForSession(code)
 	if (error) {
+		console.error('fail to exchange code session', error)
 		return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 	}
 
 	const isLocal = serverAppConfig.NODE_ENV === 'development'
 
 	if (isLocal) {
-		return NextResponse.redirect(`${origin}${redirTo}`) // local podemos ignorar qualquer validação de host
+		return NextResponse.redirect(`${APP_DOMAIN}${redirTo}`) // local podemos ignorar qualquer validação de host
 	}
 
 	const forwardedHost = request.headers.get(X_FORWARDED_HOST)

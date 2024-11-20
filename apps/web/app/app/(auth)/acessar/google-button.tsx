@@ -3,7 +3,7 @@
 import GoogleIcon from '@/components/icons/google'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@local/ui'
-import { APP_DOMAIN } from '@local/utils'
+import { HOME_DOMAIN } from '@local/utils'
 
 export default function GoogleButton() {
 	const handleLogin = async () => {
@@ -11,7 +11,7 @@ export default function GoogleButton() {
 		await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options: {
-				redirectTo: `${APP_DOMAIN}/auth/callback`,
+				redirectTo: `${HOME_DOMAIN}/auth/callback`,
 			},
 		})
 	}
