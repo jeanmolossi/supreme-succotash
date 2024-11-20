@@ -25,6 +25,7 @@ export function BlurImage(props: ImageProps) {
 	}
 
 	return (
+		// @ts-ignore
 		<Image
 			{...imgProps}
 			src={src}

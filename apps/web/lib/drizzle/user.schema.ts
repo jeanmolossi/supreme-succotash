@@ -20,6 +20,9 @@ export const users = pgTable(
 		emailVerified: timestamp('emailVerified'),
 		image: text('image'),
 		source: varchar('source'),
+		familyId: varchar('familyId')
+			.notNull()
+			.default(sql`gen_random_uuid()`),
 		createdAt: timestamp('created_at', { withTimezone: true })
 			.notNull()
 			.defaultNow(),
@@ -32,6 +35,7 @@ export const users = pgTable(
 		return {
 			usersSourceIdx: index('users_source_idx').on(table.source),
 			usersEmailIdx: index('users_email_idx').on(table.email),
+			usersFamilyIdx: index('users_family_idx').on(table.familyId),
 		}
 	},
 )
