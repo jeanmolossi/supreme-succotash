@@ -15,8 +15,8 @@ const nunitoSans = Nunito_Sans({
 })
 
 export const metadata: Metadata = {
-	title: 'Your app',
-	description: 'That is the app initial page',
+	title: 'Family Finance',
+	description: 'Faça seu cadastro',
 }
 
 export default function RootLayout({

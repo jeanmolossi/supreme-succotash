@@ -1,13 +1,13 @@
 import { HOME_DOMAIN } from '@local/utils'
 import { PropsWithChildren } from 'react'
 
-const APP_COPYRIGHTS = 'Your app Copy'
+const APP_COPYRIGHTS = 'Todos os direitos reservados.'
 const PRIVACY_POLICY_LINK = `${HOME_DOMAIN}/privacidade`
 const TERMS_LINK = `${HOME_DOMAIN}/termos`
 
 export function AuthLayout({ children }: PropsWithChildren) {
 	return (
-		<div className="grid w-full grid-cols-1 md:grid-cols-5">
+		<div className="grid w-full grid-cols-1 md:grid-cols-5 gap-2">
 			<div className="col-span-1 flex min-h-screen flex-col items-center justify-between border-r border-gray-200 bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur sm:col-span-3">
 				<div className="flex h-full w-full flex-col items-center justify-center">
 					<>{children}</>
