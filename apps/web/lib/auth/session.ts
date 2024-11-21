@@ -1,5 +1,9 @@
 import { getSession } from './helpers'
-import { ApiError, handleApiError } from '@/lib/api/errors'
+import {
+	ApiError,
+	handleAndReturnErrorResponse,
+	handleApiError,
+} from '@/lib/api/errors'
 import { User } from '@/lib/drizzle/types'
 import { db } from '@/lib/drizzle/db'
 import { users } from '@/lib/drizzle/user.schema'
@@ -73,7 +77,7 @@ export function withSession(handler: WithSessionHandler) {
 			const searchParams = getSearchParams(request.url)
 			return await handler({ request, params, searchParams, user })
 		} catch (err) {
-			return handleApiError(err)
+			return handleAndReturnErrorResponse(err)
 		}
 	}
 }

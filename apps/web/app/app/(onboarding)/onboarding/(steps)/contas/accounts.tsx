@@ -1,11 +1,10 @@
 'use client'
 
-import { LoaderCircle, PlusCircle, XCircle } from 'lucide-react'
-import { Button, Input, Label } from '@local/ui'
 import { useCallback, useState } from 'react'
 import { useAction } from 'next-safe-action/hooks'
+import { LoaderCircle, PlusCircle, XCircle } from 'lucide-react'
+import { Button, Input, Label, toast } from '@local/ui'
 import { addBankAccountAction } from '@/lib/actions/add-bank-account'
-import { toast } from 'sonner'
 import { useOnboardingProgress } from '../../use-onboarding-progress'
 
 const MAX_ACCOUNTS = 5
@@ -13,7 +12,6 @@ const MAX_ACCOUNTS = 5
 interface Account {
 	name: string
 	initialValue: string
-	saved: boolean
 }
 
 export default function Accounts() {
@@ -24,7 +22,10 @@ export default function Accounts() {
 				console.log('Bank account added')
 			},
 			onError: ({ error }) => {
-				toast.error('O sistema falhou para salvar suas contas')
+				console.log(error)
+				toast.error(
+					'O sistema falhou para salvar suas contas. Tente novamente.',
+				)
 			},
 		},
 	)
@@ -34,7 +35,6 @@ export default function Accounts() {
 	const [money, setMoney] = useState<Account>({
 		name: 'Dinheiro',
 		initialValue: 'R$ 0,00',
-		saved: false,
 	})
 
 	const [accounts, setAccounts] = useState<Account[]>([])
@@ -67,10 +67,7 @@ export default function Accounts() {
 				return prevAccounts
 			}
 
-			return [
-				...prevAccounts,
-				{ name: '', initialValue: '', saved: false },
-			]
+			return [...prevAccounts, { name: '', initialValue: '' }]
 		})
 	}
 
@@ -92,18 +89,34 @@ export default function Accounts() {
 			initialValue: money.initialValue,
 		})
 
-		await Promise.all(
+		const results = await Promise.all(
 			accounts.map(async account => {
-				await executeAsync({
+				const result = await executeAsync({
 					accountName: account.name,
 					initialValue: account.initialValue,
 				})
+
+				if (result?.serverError?.serverError) {
+					return result?.serverError?.serverError || null
+				}
+
+				return null
 			}),
 		)
 
-		await moneyPromise
+		const resultSet = new Set(results)
+		if (!(resultSet.has(null) && resultSet.size === 1)) {
+			return
+		}
 
-		await continueTo('finalizado')
+		const result = await moneyPromise
+		if (result?.serverError?.serverError) {
+			return
+		}
+
+		toast('Continuando...')
+
+		await continueTo('primeira-transacao')
 	}, [executeAsync, money, accounts, continueTo])
 
 	return (

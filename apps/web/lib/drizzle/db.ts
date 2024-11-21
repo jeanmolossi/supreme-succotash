@@ -1,5 +1,6 @@
 import serverAppConfig from '@/config/server-app-config'
 import * as usersSchema from './user.schema'
+import * as bankAccountsSchema from './bank-account.schema'
 
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
@@ -15,6 +16,7 @@ const client = postgres(connectionString, { prepare: false, idle_timeout: 5 })
 
 const schema = {
 	...usersSchema,
+	...bankAccountsSchema,
 }
 
 export const db = drizzle(client, { schema })

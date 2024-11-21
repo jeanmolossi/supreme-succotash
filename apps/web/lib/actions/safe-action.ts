@@ -1,5 +1,6 @@
 import { createSafeActionClient } from 'next-safe-action'
 import { getSession } from '../auth/helpers'
+import { getUserByID } from '../middleware/helpers'
 
 export const actionClient = createSafeActionClient({
 	handleServerError(error, utils) {
@@ -23,4 +24,22 @@ export const authUserActionClient = actionClient.use(async ({ next }) => {
 	}
 
 	return next({ ctx: { user: session.user } })
+})
+
+export const authActionClient = actionClient.use(async ({ next }) => {
+	const session = await getSession()
+	if (!session?.user.id) {
+		throw new Error('Unauthorized: Login requred.')
+	}
+
+	const user = await getUserByID(session.user)
+	if (!user) {
+		throw new Error('Unauthorized: Invalid user.')
+	}
+
+	return next({
+		ctx: {
+			user,
+		},
+	})
 })

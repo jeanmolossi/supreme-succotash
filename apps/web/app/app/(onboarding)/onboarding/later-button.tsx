@@ -5,17 +5,20 @@ import { Button, ButtonProps } from '@local/ui'
 import { useOnboardingProgress } from './use-onboarding-progress'
 import { LoaderCircle } from 'lucide-react'
 
-export function NextButton({
+export function LaterButton({
 	step,
-	children = 'Próximo',
+	children = 'Fazer mais tarde',
+	variant = 'secondary',
 	...props
-}: { step: OnboardingStep } & ButtonProps) {
-	const { continueTo, isLoading, isSuccessful } = useOnboardingProgress()
+}: { step: OnboardingStep | 'finish' } & ButtonProps) {
+	const { finish, continueTo, isLoading, isSuccessful } =
+		useOnboardingProgress()
 
 	return (
 		<Button
-			onClick={() => continueTo(step)}
+			onClick={() => (step === 'finish' ? finish() : continueTo(step))}
 			disabled={isLoading || isSuccessful}
+			variant={variant}
 			{...props}
 		>
 			<>

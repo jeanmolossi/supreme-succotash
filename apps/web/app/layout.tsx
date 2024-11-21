@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { ThemeProvider } from '@local/ui'
+import { ThemeProvider, Toaster } from '@local/ui'
 import '@local/ui/dist/index.css'
 import { cn } from '@local/utils'
 import type { Metadata } from 'next'
@@ -33,6 +33,7 @@ export default function RootLayout({
 					enableSystem
 				>
 					{children}
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

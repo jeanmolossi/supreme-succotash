@@ -1,3 +1,4 @@
+import { LaterButton } from '../../later-button'
 import { NextButton } from '../../next-button'
 import { Input, Label } from '@local/ui'
 
@@ -24,7 +25,9 @@ export default async function Page({
 				/>
 			</div>
 
-			<NextButton step="finalizado">Continuar</NextButton>
+			<LaterButton step="finish" variant="default">
+				Entrar na família
+			</LaterButton>
 
 			<p>
 				Se não possui um código de família, ou, quer iniciar uma família
@@ -32,9 +35,7 @@ export default async function Page({
 			</p>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-				<NextButton step="finalizado" variant="secondary">
-					Não, quero fazer isso depois
-				</NextButton>
+				<LaterButton step="contas" />
 
 				<NextButton step="contas">
 					Continuar configuração da conta

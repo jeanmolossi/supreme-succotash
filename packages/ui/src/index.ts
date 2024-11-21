@@ -8,4 +8,5 @@ export * from './input'
 export * from './label'
 
 // providers
+export * from './sonner'
 export * from './theme-provider'
