@@ -1,7 +1,7 @@
 import { SHORT_DOMAIN } from '@local/utils'
 import { NextRequest } from 'next/server'
 
-const LOCAL_APP_DOMAIN = 'myapp.localhost:3000'
+const LOCAL_APP_DOMAIN = 'localhost:3000'
 
 export const parse = (req: NextRequest) => {
 	let domain = req.headers.get('host') as string
@@ -19,7 +19,7 @@ export const parse = (req: NextRequest) => {
 	// fullPath é a url completa (inclui os search params)
 	const searchParams = req.nextUrl.searchParams.toString()
 	const searchParamsStr = searchParams.length > 0 ? `?${searchParams}` : ''
-	const fullPath = `${path}${searchParamsStr}`
+	const fullPath = `/app${path}${searchParamsStr}`
 
 	// Aqui, usamos o decodeURIComponent pra lidar com caracteres especiais
 	const key = decodeURIComponent(path.split('/')[1]) // key é a primeira parte do caminho (ex: myapp.com/dashboard/chats -> dashboard)

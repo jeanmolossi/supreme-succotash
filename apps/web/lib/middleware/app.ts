@@ -39,7 +39,7 @@ export default async function AppMiddleware(request: NextRequest) {
 	const user = await getUserByID(userProvided)
 
 	const userCreatedLessThanADayAgo =
-		new Date(user?.createdAt || 0).getTime() >
+		new Date(user?.created_at || 0).getTime() >
 		Date.now() - 60 * 60 * 24 * 1000
 
 	const isWorkspaceInvite = request.nextUrl.searchParams.get('invite')
@@ -53,7 +53,7 @@ export default async function AppMiddleware(request: NextRequest) {
 		const whereToGo =
 			path === '/' ? '' : `?redir_to=${encodeURIComponent(fullPath)}`
 		return NextResponse.redirect(
-			new URL(`${LOGIN_PAGE}${whereToGo}`, request.url),
+			new URL(`/app${LOGIN_PAGE}${whereToGo}`, request.url),
 		)
 
 		// se o usuario ta logado
@@ -79,14 +79,14 @@ export default async function AppMiddleware(request: NextRequest) {
 			let step = await getOnboardingStep(user)
 			if (!step) {
 				return NextResponse.redirect(
-					new URL(ONBOARDING_PATH, request.url),
+					new URL(`/app${ONBOARDING_PATH}`, request.url),
 				)
 			} else if (step === ONBOARDING_COMPLETED_STEP) {
 				// redireciona para uma pagina dashboard default
 			}
 
 			return NextResponse.redirect(
-				new URL(`${ONBOARDING_PATH}`, request.url),
+				new URL(`/app${ONBOARDING_PATH}`, request.url),
 			)
 			// se o path é / ou /acessar ou /cadastro, redireciona para o dashboard default
 		} else if (
@@ -94,7 +94,7 @@ export default async function AppMiddleware(request: NextRequest) {
 			path.startsWith(SETTINGS_PATH)
 		) {
 			return NextResponse.redirect(
-				new URL(`${ONBOARDING_PATH}`, request.url),
+				new URL(`/app${ONBOARDING_PATH}`, request.url),
 			)
 		}
 	}

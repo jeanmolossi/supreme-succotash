@@ -8,11 +8,13 @@
 		"start": "next start",
 		"lint": "eslint . --max-warnings 0",
 		"generate": "IS_NODE=1 pnpm drizzle-kit generate",
-		"push": "IS_NODE=1 pnpm drizzle-kit push"
+		"push": "IS_NODE=1 pnpm drizzle-kit push",
+		"migrate": "IS_NODE=1 pnpm drizzle-kit migrate"
 	},
 	"dependencies": {
 		"@local/ui": "workspace:*",
 		"@local/utils": "workspace:*",
+		"@next/env": "^15.0.3",
 		"@supabase/ssr": "^0.5.1",
 		"@upstash/ratelimit": "^2.0.3",
 		"@upstash/redis": "^1.34.3",

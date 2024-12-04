@@ -1,5 +1,5 @@
-import { User } from '@/lib/drizzle/types'
 import { ONBOARDING, OnboardingStep } from '@/lib/onboarding/types'
+import { User } from '@/lib/types/entities/user'
 
 export async function getOnboardingStep(user: User): Promise<OnboardingStep> {
 	if (!user) {

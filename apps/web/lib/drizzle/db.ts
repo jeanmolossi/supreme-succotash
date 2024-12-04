@@ -35,4 +35,4 @@ async function applySchema() {
 	}
 }
 
-applySchema()
+// applySchema()

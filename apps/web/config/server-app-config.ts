@@ -1,7 +1,4 @@
-if (process.env.IS_NODE === '1') {
-	const dotenv = require('dotenv')
-	dotenv.config({ path: '.env.development.local' })
-}
+import './env-config'
 
 const serverAppConfig = {
 	NODE_ENV: process.env.NODE_ENV || 'development',

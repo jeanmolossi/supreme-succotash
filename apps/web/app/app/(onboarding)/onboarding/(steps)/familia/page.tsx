@@ -1,6 +1,7 @@
+import { Suspense } from 'react'
 import { LaterButton } from '../../later-button'
 import { NextButton } from '../../next-button'
-import { Input, Label } from '@local/ui'
+import JoinFamilyForm from './form'
 
 export default async function Page({
 	searchParams,
@@ -15,32 +16,22 @@ export default async function Page({
 				Configuração de família
 			</h1>
 
-			<p>Você possui um código de família ?</p>
-
-			<div className="flex flex-col w-full gap-1">
-				<Label>Código de família</Label>
-				<Input
-					placeholder="ex: abe53d09-88ba-08a7-afa8-56fafbb5abf0"
-					value={search['family-invite']}
-				/>
-			</div>
-
-			<LaterButton step="finish" variant="default">
-				Entrar na família
-			</LaterButton>
+			<JoinFamilyForm invite={search['family-invite']} />
 
 			<p>
 				Se não possui um código de família, ou, quer iniciar uma família
 				escolha como deseja prosseguir abaixo
 			</p>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-				<LaterButton step="contas" />
+			<Suspense>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+					<LaterButton step="contas" />
 
-				<NextButton step="contas">
-					Continuar configuração da conta
-				</NextButton>
-			</div>
+					<NextButton step="contas">
+						Continuar configuração da conta
+					</NextButton>
+				</div>
+			</Suspense>
 		</div>
 	)
 }

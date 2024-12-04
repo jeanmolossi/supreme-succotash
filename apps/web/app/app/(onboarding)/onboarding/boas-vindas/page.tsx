@@ -1,6 +1,7 @@
 import { Wordmark } from '@local/ui'
 import clientAppConfig from '@/config/client-app-config'
 import { NextButton } from '../next-button'
+import { Suspense } from 'react'
 
 export default function Welcome() {
 	return (
@@ -32,7 +33,9 @@ export default function Welcome() {
 			</p>
 
 			<div className="animate-slide-up-fade mt-10 w-full [--offset:10px] [animation-delay:750ms] [animation-duration:1s] [animation-fill-mode:both]">
-				<NextButton step="familia" />
+				<Suspense>
+					<NextButton step="familia" />
+				</Suspense>
 			</div>
 		</div>
 	)

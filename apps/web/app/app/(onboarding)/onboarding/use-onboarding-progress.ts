@@ -29,14 +29,16 @@ export function useOnboardingProgress() {
 	const continueTo = useCallback(async (step: OnboardingStep) => {
 		execute({ onboardingStep: step })
 		const queryParams =
-			step === ONBOARDING.FAMILY ? '?family-invite=' + inviteCode : ''
+			step === ONBOARDING.FAMILY && inviteCode
+				? '?family-invite=' + inviteCode
+				: ''
 
 		router.push(`/onboarding/${step}${queryParams}`)
 	}, [])
 
 	const finish = useCallback(async () => {
 		await executeAsync({ onboardingStep: ONBOARDING.COMPLETED })
-		router.push(`/`)
+		router.push(`/dashboard`)
 	}, [executeAsync, router])
 
 	return {

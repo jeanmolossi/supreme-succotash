@@ -1,34 +1,9 @@
-import { API_HOSTNAMES, APP_HOSTNAMES, LP_HOSTNAMES } from '@local/utils'
-import { NextResponse, type NextRequest } from 'next/server'
-import ApiMiddleware from '@/lib/middleware/api'
+import { type NextRequest } from 'next/server'
 import AppMiddleware from '@/lib/middleware/app'
-import { parse } from '@/lib/middleware/helpers'
-import LpMiddleware from './lib/middleware/lp'
 
 export async function middleware(request: NextRequest) {
-	const { domain } = parse(request)
-
-	// para landing pages
-	if (LP_HOSTNAMES.has(domain)) {
-		return LpMiddleware(request)
-	}
-
 	// para o app
-	if (APP_HOSTNAMES.has(domain)) {
-		return AppMiddleware(request)
-	}
-
-	// para a api
-	if (API_HOSTNAMES.has(domain)) {
-		return ApiMiddleware(request)
-	}
-
-	// redirect padrao
-	// if (domain === SHORT_DOMAIN && DEFAULT_REDIRECTS[key]) {
-	// 	return NextResponse.redirect(DEFAULT_REDIRECTS[key])
-	// }
-
-	return NextResponse.next({ request })
+	return AppMiddleware(request)
 }
 
 export const config = {

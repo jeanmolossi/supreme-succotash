@@ -89,24 +89,26 @@ export default function Accounts() {
 			initialValue: money.initialValue,
 		})
 
-		const results = await Promise.all(
-			accounts.map(async account => {
-				const result = await executeAsync({
-					accountName: account.name,
-					initialValue: account.initialValue,
-				})
+		if (accounts.length > 0) {
+			const results = await Promise.all(
+				accounts.map(async account => {
+					const result = await executeAsync({
+						accountName: account.name,
+						initialValue: account.initialValue,
+					})
 
-				if (result?.serverError?.serverError) {
-					return result?.serverError?.serverError || null
-				}
+					if (result?.serverError?.serverError) {
+						return result?.serverError?.serverError || null
+					}
 
-				return null
-			}),
-		)
+					return null
+				}),
+			)
 
-		const resultSet = new Set(results)
-		if (!(resultSet.has(null) && resultSet.size === 1)) {
-			return
+			const resultSet = new Set(results)
+			if (!(resultSet.has(null) && resultSet.size === 1)) {
+				return
+			}
 		}
 
 		const result = await moneyPromise

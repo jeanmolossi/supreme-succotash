@@ -2,8 +2,8 @@
 
 import { z } from 'zod'
 import { authActionClient } from './safe-action'
-import { bankAccounts } from '../drizzle/bank-account.schema'
-import { createClient } from '../supabase/server'
+import { API_DOMAIN } from '@local/utils'
+import { STATUS_OK } from '../api/codes'
 
 export const addBankAccountAction = authActionClient
 	.schema(
@@ -24,16 +24,27 @@ export const addBankAccountAction = authActionClient
 		)
 
 		try {
-			const supabase = await createClient()
-			const { error } = await supabase
-				.from('bank_accounts')
-				.insert({
-					userID: user.id,
-					familyID: user.familyId,
-					name: accountName,
-					initialValue: rawValue,
+			const body = new FormData()
+			body.append('user_id', user.id)
+			body.append('family_id', user.family_id)
+			body.append('name', accountName)
+			body.append('initial_value', rawValue.toString())
+
+			const error = await fetch(`${API_DOMAIN}/bank-accounts`, {
+				method: 'POST',
+				body,
+			})
+				.then(async res => {
+					if (res.status !== STATUS_OK) {
+						const result = await res.json()
+						if ('error' in result) {
+							throw new Error(result.error)
+						}
+					}
+
+					return null
 				})
-				.select()
+				.catch(err => err)
 
 			if (error) {
 				console.error(error)

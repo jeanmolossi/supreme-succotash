@@ -1,0 +1,21 @@
+services:
+    app:
+        container_name: app
+        build: .
+        networks:
+            - family-finance-api_ff_net
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '3000:3000'
+        command: pnpm run dev
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.95'
+                    memory: '4GB'
+
+networks:
+    family-finance-api_ff_net:
+        external: true

@@ -11,7 +11,7 @@ export default function GoogleButton() {
 		await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options: {
-				redirectTo: `${HOME_DOMAIN}/auth/callback`,
+				redirectTo: `${HOME_DOMAIN}/app/auth/callback`,
 			},
 		})
 	}

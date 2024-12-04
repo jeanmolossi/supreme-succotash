@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Accounts from './accounts'
 import { LaterButton } from '../../later-button'
 
@@ -10,11 +11,15 @@ export default function Page() {
 
 			<p>Quais contas você possui?</p>
 
-			<Accounts />
+			<Suspense>
+				<Accounts />
+			</Suspense>
 
-			<LaterButton step="finish" variant="secondary">
-				Adicionar depois
-			</LaterButton>
+			<Suspense>
+				<LaterButton step="finish" variant="secondary">
+					Adicionar depois
+				</LaterButton>
+			</Suspense>
 		</div>
 	)
 }

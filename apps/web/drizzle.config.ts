@@ -1,7 +1,10 @@
+import './config/env-config'
+
 import { Config, defineConfig } from 'drizzle-kit'
 import serverAppConfig from './config/server-app-config'
 
 const connectionString = serverAppConfig.DATABASE_URL
+console.log({ serverAppConfig })
 
 if (!connectionString) {
 	console.log('🔴 Missing DATABASE_URL')
