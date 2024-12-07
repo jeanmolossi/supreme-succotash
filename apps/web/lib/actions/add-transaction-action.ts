@@ -12,15 +12,18 @@ export const addTransactionAction = authActionClient
 				.uuid('A conta selecionada deve ser válida'),
 			type: z.enum(['outcome', 'income']),
 			amount: z.string().min(7, 'Digite o valor da transação'),
+			category_id: z.string().uuid('Selecione uma categoria válida'),
+			description: z
+				.string()
+				.min(1, 'Fornceça uma descrição para a transação'),
 		}),
 	)
 	.action(async ({ ctx, parsedInput }) => {
 		const { user } = ctx
-		const { bank_account_id, type, amount } = parsedInput
+		const { bank_account_id, type, amount, description, category_id } =
+			parsedInput
 
 		try {
-			const categoryPromise = fetchFirstCategoryID(user.family_id)
-
 			const rawValue = parseFloat(
 				amount
 					.replace(/[^\d,.-]/g, '')
@@ -34,8 +37,8 @@ export const addTransactionAction = authActionClient
 			body.append('bank_account_id', bank_account_id)
 			body.append('type', type)
 			body.append('amount', rawValue.toString())
-			body.append('category_id', await categoryPromise)
-			body.append('description', 'Primeira transação')
+			body.append('category_id', category_id)
+			body.append('description', description)
 
 			const error = await fetch(`${API_DOMAIN}/transactions`, {
 				method: 'POST',
@@ -65,10 +68,3 @@ export const addTransactionAction = authActionClient
 
 		return { success: true }
 	})
-
-const fetchFirstCategoryID = async (familyID: string) => {
-	return fetch(`${API_DOMAIN}/categories?family_id=${familyID}`)
-		.then(res => res.json())
-		.then(res => (Array.isArray(res) ? res.at(0) : null))
-		.then(res => (!!res ? res.id : null))
-}
