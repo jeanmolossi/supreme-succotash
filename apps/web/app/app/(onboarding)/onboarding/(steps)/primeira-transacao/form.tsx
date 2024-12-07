@@ -3,7 +3,7 @@
 import { Button, Input, Label, toast } from '@local/ui'
 import { BankAccount } from '@/lib/types/entities/bank-account'
 import { useAction } from 'next-safe-action/hooks'
-import { addTransactionAction } from '@/lib/actions/add-transaction-action'
+import { addTransactionAction } from '@/lib/actions/add-first-transaction-action'
 import React, { useCallback, useState } from 'react'
 import { useOnboardingProgress } from '../../use-onboarding-progress'
 import { LoaderCircle } from 'lucide-react'
