@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
+import { parseISO } from 'date-fns'
 
 export const addTransactionAction = authActionClient
 	.schema(
@@ -13,6 +14,7 @@ export const addTransactionAction = authActionClient
 			type: z.enum(['outcome', 'income']),
 			amount: z.string().min(7, 'Digite o valor da transação'),
 			category_id: z.string().uuid('Selecione uma categoria válida'),
+			transacted_at: z.string().length(16),
 			description: z
 				.string()
 				.min(1, 'Fornceça uma descrição para a transação'),
@@ -20,8 +22,14 @@ export const addTransactionAction = authActionClient
 	)
 	.action(async ({ ctx, parsedInput }) => {
 		const { user } = ctx
-		const { bank_account_id, type, amount, description, category_id } =
-			parsedInput
+		const {
+			bank_account_id,
+			type,
+			amount,
+			description,
+			category_id,
+			transacted_at,
+		} = parsedInput
 
 		try {
 			const rawValue = parseFloat(
@@ -39,6 +47,7 @@ export const addTransactionAction = authActionClient
 			body.append('amount', rawValue.toString())
 			body.append('category_id', category_id)
 			body.append('description', description)
+			body.append('transacted_at', parseISO(transacted_at).toISOString())
 
 			const error = await fetch(`${API_DOMAIN}/transactions`, {
 				method: 'POST',

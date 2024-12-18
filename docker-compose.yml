@@ -6,8 +6,9 @@ services:
             context: .
             dockerfile: Dockerfile.dev
         volumes:
-            - .:/app
             - /app/node_modules
+            - ./apps/web/node_modules:/app/apps/web/node_modules
+            - .:/app
         ports:
             - '3000:3000'
         command: pnpm run dev

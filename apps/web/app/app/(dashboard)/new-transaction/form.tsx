@@ -23,6 +23,7 @@ import { useAction } from 'next-safe-action/hooks'
 import { addTransactionAction } from '@/lib/actions/add-transaction-action'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { formatDateInput } from '@/lib/helpers/dates'
 
 interface NewTransactionFormProps {
 	bankAccounts: BankAccount[]
@@ -39,6 +40,9 @@ export default function NewTransactionForm({
 	const defaultCategory = categories.at(0)!
 	const [category, setCategory] = useState(defaultCategory.id)
 	const [amount, setAmount] = useState('')
+	const [transactedAt, setTransactedAt] = useState(
+		formatDateInput(new Date()),
+	)
 
 	const { executeAsync, hasSucceeded, isExecuting } = useAction(
 		addTransactionAction,
@@ -79,6 +83,14 @@ export default function NewTransactionForm({
 		[parseAmount],
 	)
 
+	const onChangeTransactedAt = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const value = e.target.value
+			setTransactedAt(formatDateInput(value))
+		},
+		[],
+	)
+
 	const onSubmit = useCallback(
 		async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault()
@@ -89,6 +101,7 @@ export default function NewTransactionForm({
 				amount,
 				category_id: category,
 				bank_account_id: account,
+				transacted_at: transactedAt,
 			})
 
 			const hasValidationErrors =
@@ -108,7 +121,7 @@ export default function NewTransactionForm({
 			toast.success('Finalizando...')
 			router.replace('/dashboard')
 		},
-		[type, account, category, amount],
+		[type, account, category, amount, transactedAt],
 	)
 
 	return (
@@ -183,15 +196,28 @@ export default function NewTransactionForm({
 				</Select>
 			</div>
 
-			<div>
-				<Label>Valor</Label>
-				<Input
-					name="amount"
-					placeholder="Ex: R$ 25,99"
-					className="text-right"
-					onChange={onChange}
-					value={amount}
-				/>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<Label>Valor</Label>
+					<Input
+						name="amount"
+						placeholder="Ex: R$ 25,99"
+						className="text-right"
+						onChange={onChange}
+						value={amount}
+					/>
+				</div>
+
+				<div>
+					<Label>Data</Label>
+					<Input
+						name="transacted_at"
+						type="datetime-local"
+						className="text-right"
+						onChange={onChangeTransactedAt}
+						value={transactedAt}
+					/>
+				</div>
 			</div>
 
 			<div>
