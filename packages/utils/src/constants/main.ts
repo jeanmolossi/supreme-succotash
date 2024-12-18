@@ -1,6 +1,6 @@
 const PORT = process.env.PORT || 3000
-const PROXY_PORT = process.env.PROXY_PORT || 8080
-const PROXY_URL = process.env.PROXY_URL || 'api01'
+const API_PORT = process.env.API_PORT || 8080
+const API_HOST = process.env.API_HOST || 'api01'
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME
 
@@ -25,7 +25,7 @@ export const APP_DOMAIN = IS_VERCEL_PROD_ENV
 	? `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`
 	: IS_VERCEL_PREVIEW_ENV
 		? `https://preview.${process.env.NEXT_PUBLIC_APP_DOMAIN}`
-		: `http://localhost:${PROXY_PORT}`
+		: `http://localhost:${API_PORT}`
 
 export const API_HOSTNAMES = new Set([
 	`api.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
@@ -38,7 +38,7 @@ export const API_DOMAIN = IS_VERCEL_PROD_ENV
 	? `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}/api`
 	: IS_VERCEL_PREVIEW_ENV
 		? `https://api-staging.${process.env.NEXT_PUBLIC_APP_DOMAIN}`
-		: `http://${PROXY_URL}:${PORT}/api`
+		: `http://${API_HOST}:${PORT}/api`
 
 export const LP_HOSTNAMES = new Set([
 	`lp.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
