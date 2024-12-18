@@ -26,6 +26,9 @@ export default function RootLayout({
 }): JSX.Element {
 	return (
 		<html lang="en">
+			<head>
+				<meta name="apple-mobile-web-app-title" content="Finances" />
+			</head>
 			<body className={cn(inter.variable, nunitoSans.variable)}>
 				<ThemeProvider
 					attribute="class"
