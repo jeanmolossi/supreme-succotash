@@ -10,7 +10,7 @@ export async function fetchTransactions() {
 	}
 
 	const query = new URLSearchParams({
-		user_id: user.id,
+		family_id: user.family_id,
 	})
 
 	const transactions = await fetch(

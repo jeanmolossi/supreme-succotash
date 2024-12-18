@@ -91,7 +91,17 @@ export default function NewTransactionForm({
 				bank_account_id: account,
 			})
 
-			if (result?.serverError?.serverError) {
+			const hasValidationErrors =
+				Object.values(result?.validationErrors || {}).length > 0
+
+			if (hasValidationErrors) {
+				const error = Object.values(result!.validationErrors!).at(0)
+				if (!Array.isArray(error)) {
+					toast.error(error?._errors?.at(0))
+				}
+			}
+
+			if (result?.serverError?.serverError || hasValidationErrors) {
 				return
 			}
 

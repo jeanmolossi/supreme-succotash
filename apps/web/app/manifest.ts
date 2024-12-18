@@ -4,8 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
 	return {
 		name: 'Family Finance',
 		short_name: 'FF',
-		description: 'Your – the open-source link management infrastructure.',
-		start_url: '/',
+		description: 'Gerenciador das finanças da sua família',
+		start_url: '/app/dashboard',
 		display: 'standalone',
 		background_color: '#ffffff',
 		theme_color: '#ffffff',

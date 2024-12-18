@@ -1,0 +1,3 @@
+.git/
+.pnpm-store/
+Dockerfile.dev

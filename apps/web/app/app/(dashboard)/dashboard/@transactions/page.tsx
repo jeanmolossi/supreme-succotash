@@ -3,9 +3,17 @@ import { Transaction } from '@/lib/types/entities/transaction'
 import { cn } from '@local/utils'
 
 function RenderTransaction({ transaction }: { transaction: Transaction }) {
+	const transactedAt = new Date(transaction.transacted_at).toLocaleDateString(
+		'pt-BR',
+	)
 	return (
 		<div className="grid grid-cols-2 border-b py-1 mt-1 animate-slide-up-fade [animation-delay:250ms] [animation-duration:1s] [animation-fill-mode:both]">
-			<span className="text-sm">{transaction.description}</span>
+			<div className="grid grid-cols-2 items-baseline gap-2">
+				<span className="text-sm">{transaction.description}</span>
+				<small className="text-xs text-muted-foreground">
+					{transactedAt}
+				</small>
+			</div>
 			<span
 				className={cn(
 					transaction.type === 'income'

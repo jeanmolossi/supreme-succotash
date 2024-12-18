@@ -9,7 +9,7 @@ const AUTH_CODE_PAGE = '/app/auth/auth-code-error'
 export async function GET(request: NextRequest) {
 	const { searchParams, origin } = new URL(request.url)
 	const code = searchParams.get('code')
-	const redirTo = searchParams.get('redir_to') || '/app' // next é a url de redirect (quando existe usamos ela)
+	const redirTo = searchParams.get('redir_to') || '/app/dashboard' // next é a url de redirect (quando existe usamos ela)
 
 	if (!code) {
 		console.error('failed to retrieve code')

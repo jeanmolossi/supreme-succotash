@@ -1,0 +1,17 @@
+services:
+    app:
+        image: ghcr.io/jeanmolossi/supreme-succotash-app:latest
+        hostname: app01
+        environment:
+            NEXT_PUBLIC_VERCEL_ENV: production
+        networks:
+            - lb_network
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.95'
+                    memory: '4GB'
+
+networks:
+    lb_network:
+        external: true

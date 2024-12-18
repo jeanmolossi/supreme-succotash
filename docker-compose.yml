@@ -1,15 +1,18 @@
 services:
     app:
-        container_name: app
-        build: .
-        networks:
-            - family-finance-api_ff_net
+        hostname: app01
+        container_name: app01
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
         volumes:
-            - .:/usr/src/app
-            - /usr/src/app/node_modules
+            - .:/app
+            - /app/node_modules
         ports:
             - '3000:3000'
         command: pnpm run dev
+        networks:
+            - family-finance-api_ff_net
         deploy:
             resources:
                 limits:

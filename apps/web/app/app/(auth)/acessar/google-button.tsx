@@ -1,19 +1,12 @@
 'use client'
 
 import GoogleIcon from '@/components/icons/google'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@local/ui'
-import { HOME_DOMAIN } from '@local/utils'
 
 export default function GoogleButton() {
 	const handleLogin = async () => {
-		const supabase = createClient()
-		await supabase.auth.signInWithOAuth({
-			provider: 'google',
-			options: {
-				redirectTo: `${HOME_DOMAIN}/app/auth/callback`,
-			},
-		})
+		const authUrl = `/api/auth/v1/google?redir_to=/app/onboarding?welcome`
+		window.location.assign(authUrl)
 	}
 
 	return (

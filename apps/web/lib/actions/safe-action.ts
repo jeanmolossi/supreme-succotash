@@ -19,22 +19,17 @@ export const actionClient = createSafeActionClient({
 export const authUserActionClient = actionClient.use(async ({ next }) => {
 	const session = await getSession()
 
-	if (!session?.user.id) {
+	if (!session?.id) {
 		throw new Error('Unauthorized: Login required.')
 	}
 
-	return next({ ctx: { user: session.user } })
+	return next({ ctx: { user: session } })
 })
 
 export const authActionClient = actionClient.use(async ({ next }) => {
-	const session = await getSession()
-	if (!session?.user.id) {
+	const user = await getSession()
+	if (!user?.id) {
 		throw new Error('Unauthorized: Login requred.')
-	}
-
-	const user = await getUserByID(session.user)
-	if (!user) {
-		throw new Error('Unauthorized: Invalid user.')
 	}
 
 	return next({

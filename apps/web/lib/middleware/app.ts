@@ -1,7 +1,7 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { getOnboardingStep, getUserByID, parse } from './helpers'
 import serverAppConfig from '@/config/server-app-config'
+import { createServerClient } from './helpers/auth'
 
 const { SUPABASE_URL, ANON_KEY } = serverAppConfig
 
@@ -17,7 +17,7 @@ export default async function AppMiddleware(request: NextRequest) {
 	const { path, fullPath } = parse(request)
 	let response = NextResponse.next({ request })
 
-	const supabase = createServerClient(SUPABASE_URL, ANON_KEY, {
+	const apiClient = createServerClient({
 		cookies: {
 			getAll: () => request.cookies.getAll(),
 			setAll: cookiesToSet => {
@@ -33,10 +33,7 @@ export default async function AppMiddleware(request: NextRequest) {
 		},
 	})
 
-	const {
-		data: { user: userProvided },
-	} = await supabase.auth.getUser()
-	const user = await getUserByID(userProvided)
+	const { user } = await apiClient.auth.getUser()
 
 	const userCreatedLessThanADayAgo =
 		new Date(user?.created_at || 0).getTime() >
@@ -59,7 +56,7 @@ export default async function AppMiddleware(request: NextRequest) {
 		// se o usuario ta logado
 	} else if (user) {
 		// /onboarding é a página de "boas vindas" e introducao ao sistema
-		if (path === ONBOARDING_PATH) {
+		if (path.startsWith(ONBOARDING_PATH)) {
 			// devemos ter outro middleware sendo aplicado aqui
 			/**
 			 * Intencao
@@ -70,6 +67,8 @@ export default async function AppMiddleware(request: NextRequest) {
 			 * - O caminho nao comeca com /onboarding
 			 * - O usuario nao completou o /onboarding
 			 */
+
+			return NextResponse.redirect(new URL(`/app/dashboard`, request.url))
 		} else if (
 			userCreatedLessThanADayAgo &&
 			!isWorkspaceInvite &&

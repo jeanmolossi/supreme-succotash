@@ -1,14 +1,28 @@
 import { fetchAccountBalance } from '@/lib/api/fetchers/fetch-account-balance'
 import { BankAccountBalance } from '@/lib/types/entities/bank-account'
+import { cn } from '@local/utils'
 
 function RenderAccount({ account }: { account: BankAccountBalance }) {
+	const balance = account.account_balance
+	const isPositive = balance > 0
+	const isNegative = balance < 0
+
 	return (
 		<div
 			key={account.bank_account_id}
 			className="grid grid-cols-2 gap-2 border-b py-1 mt-1"
 		>
 			<span className="text-sm">{account.bank_account.name}</span>
-			<span className="text-right font-normal text-green-600">
+			<span
+				className={cn(
+					'text-right font-normal text-green-600',
+					isPositive
+						? 'text-green-600'
+						: isNegative
+							? 'text-destructive'
+							: 'text-gray-600',
+				)}
+			>
 				{account.account_balance.toLocaleString('pt-BR', {
 					style: 'currency',
 					currency: 'BRL',

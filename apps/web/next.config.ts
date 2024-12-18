@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 /** @type {NextConfig} */
 export default {
 	reactStrictMode: false,
+	output: 'standalone',
 	basePath: '/app',
 	async headers() {
 		return [

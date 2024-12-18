@@ -1,29 +1,37 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { HOME_DOMAIN } from '@local/utils'
 import { redirect } from 'next/navigation'
-import { getUserByID } from '../middleware/helpers'
+import { cookies } from 'next/headers'
+import { createServerClient } from '@/lib/middleware/helpers/auth'
 
 export const getSession = async () => {
-	const supabase = await createClient()
-	const { data, error } = await supabase.auth.getUser()
+	const cookieStore = await cookies()
+	const apiClient = createServerClient({
+		cookies: {
+			getAll() {
+				return cookieStore.getAll()
+			},
+			setAll(cookiesToSet) {
+				cookiesToSet.forEach(cookie => {
+					cookieStore.set(cookie.name, cookie.value, cookie.options)
+				})
+			},
+		},
+	})
+
+	const { user, error } = await apiClient.auth.getUser()
 
 	if (error) {
 		console.log('get session failed', error)
 		return
 	}
 
-	return data
+	return user
 }
 
 export const getLoggedUser = async () => {
-	const session = await getSession()
-	if (!session?.user) {
-		redirect(HOME_DOMAIN)
-	}
-
-	const user = await getUserByID(session.user)
+	const user = await getSession()
 	if (!user) {
 		redirect(HOME_DOMAIN)
 	}

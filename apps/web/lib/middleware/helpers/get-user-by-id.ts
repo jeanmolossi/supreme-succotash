@@ -89,45 +89,5 @@ export async function getUserByID<T extends UserProvided>(
 		return
 	}
 
-	let user = data
-
-	if (!user) {
-		const {
-			name,
-			email,
-			confirmed_at: confirmedAt,
-			user_metadata: {
-				email_confirmed_at: emailConfirmedAt,
-				full_name: fullName,
-			},
-		} = userProvided
-
-		let emailVerified: Date | null = null
-		if (emailConfirmedAt) {
-			emailVerified = new Date(emailConfirmedAt)
-		}
-
-		if (!emailVerified && confirmedAt) {
-			emailVerified = new Date(confirmedAt)
-		}
-		if (!email) {
-			return
-		}
-
-		const [data, error] = await createUser({
-			id: userProvided.id,
-			name: name || fullName || 'Desconhecido',
-			email,
-			email_verified_at: emailVerified?.toISOString(),
-			source: 'google_provider',
-		})
-
-		if (error) {
-			return
-		}
-
-		user = data
-	}
-
-	return user
+	return data
 }
