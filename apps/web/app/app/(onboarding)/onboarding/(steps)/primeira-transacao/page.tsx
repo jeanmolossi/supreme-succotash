@@ -2,14 +2,10 @@ import { Suspense } from 'react'
 import { LaterButton } from '../../later-button'
 import FirstTransactionForm from './form'
 import { API_DOMAIN } from '@local/utils'
-import { getSession } from '@/lib/auth/helpers'
-import { getUserByID } from '@/lib/middleware/helpers'
+import { getLoggedUser } from '@/lib/auth/helpers'
 
 export default async function Page() {
-	const session = await getSession()
-	if (!session) return null
-	const user = await getUserByID(session?.user)
-	if (!user) return null
+	const user = await getLoggedUser()
 
 	const bankAccounts = await fetch(
 		`${API_DOMAIN}/bank-accounts?family_id=${user.family_id}`,

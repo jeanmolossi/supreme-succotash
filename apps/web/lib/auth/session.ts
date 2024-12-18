@@ -1,14 +1,7 @@
-import { getSession } from './helpers'
-import {
-	ApiError,
-	handleAndReturnErrorResponse,
-	handleApiError,
-} from '@/lib/api/errors'
-import { User } from '@/lib/drizzle/types'
-import { db } from '@/lib/drizzle/db'
-import { users } from '@/lib/drizzle/user.schema'
-import { eq } from 'drizzle-orm'
+import { getLoggedUser } from './helpers'
+import { ApiError, handleAndReturnErrorResponse } from '@/lib/api/errors'
 import { getSearchParams } from '@local/utils'
+import { User } from '@/lib/types/entities/user'
 
 interface WithSessionHandler {
 	({
@@ -33,20 +26,7 @@ export function withSession(handler: WithSessionHandler) {
 
 		try {
 			let headers = {}
-			const session = await getSession()
-
-			if (!session?.user.id) {
-				throw new ApiError({
-					code: 'unauthorized',
-					message: 'Unauthorized: Login required.',
-				})
-			}
-
-			const userId = session.user.id
-
-			const user = await db.query.users.findFirst({
-				where: eq(users.id, userId),
-			})
+			const user = await getLoggedUser()
 
 			if (!user) {
 				throw new ApiError({

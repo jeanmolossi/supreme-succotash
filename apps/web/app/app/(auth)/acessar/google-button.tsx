@@ -2,10 +2,11 @@
 
 import GoogleIcon from '@/components/icons/google'
 import { Button } from '@local/ui'
+import { HOME_DOMAIN } from '@local/utils'
 
 export default function GoogleButton() {
 	const handleLogin = async () => {
-		const authUrl = `/api/auth/v1/google?redir_to=/app/onboarding?welcome`
+		const authUrl = `${HOME_DOMAIN}/api/auth/v1/google?redir_to=/app/onboarding?welcome`
 		window.location.assign(authUrl)
 	}
 

@@ -27,7 +27,7 @@ IMG_TAG="${BASE_REGISTRY}/${IMAGE_NAME}-${IMAGE}"
 docker build \
 	--label="${IMAGE_LABEL}/$IMAGE_NAME" \
 	--label="${IMAGE_DESC}" \
-	-t $IMAGE .
+	-t $IMAGE . || exit 1
 
 CONTAINER_ID=$(docker image ls --filter=reference="$IMAGE:latest" -q)
 echo "tagging image ${CONTAINER_ID//[$'\t\r\n']/}..."
