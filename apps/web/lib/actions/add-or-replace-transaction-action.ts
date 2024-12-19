@@ -5,13 +5,14 @@ import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
 import { parseISO } from 'date-fns'
 
-export const addTransactionAction = authActionClient
+export const addOrReplaceTransactionAction = authActionClient
 	.schema(
 		z.object({
+			id: z.string().optional(),
 			bank_account_id: z
 				.string()
 				.uuid('A conta selecionada deve ser válida'),
-			type: z.enum(['outcome', 'income']),
+			type: z.enum(['credit', 'outcome', 'income']),
 			amount: z.string().min(7, 'Digite o valor da transação'),
 			category_id: z.string().uuid('Selecione uma categoria válida'),
 			transacted_at: z.string().length(16),
@@ -23,6 +24,7 @@ export const addTransactionAction = authActionClient
 	.action(async ({ ctx, parsedInput }) => {
 		const { user } = ctx
 		const {
+			id,
 			bank_account_id,
 			type,
 			amount,
@@ -49,8 +51,12 @@ export const addTransactionAction = authActionClient
 			body.append('description', description)
 			body.append('transacted_at', parseISO(transacted_at).toISOString())
 
-			const error = await fetch(`${API_DOMAIN}/transactions`, {
-				method: 'POST',
+			const isReplace = !!id
+			const resource = isReplace ? `/${id}` : ''
+			const method = isReplace ? 'PUT' : 'POST'
+
+			const error = await fetch(`${API_DOMAIN}/transactions${resource}`, {
+				method,
 				body,
 			})
 				.then(async res => {
@@ -71,8 +77,8 @@ export const addTransactionAction = authActionClient
 				throw error
 			}
 		} catch (error) {
-			console.error('Failed to add a transaction', error)
-			throw new Error('Failed to add a transaction')
+			console.error('Failed to add or replace a transaction', error)
+			throw new Error('Failed to add or replace a transaction')
 		}
 
 		return { success: true }

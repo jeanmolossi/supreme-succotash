@@ -1,6 +1,8 @@
 import { fetchTransactions } from '@/lib/api/fetchers/fetch-transactions'
 import { Transaction } from '@/lib/types/entities/transaction'
 import { cn } from '@local/utils'
+import { Edit } from 'lucide-react'
+import Link from 'next/link'
 
 function RenderTransaction({ transaction }: { transaction: Transaction }) {
 	const transactedAt = new Date(transaction.transacted_at).toLocaleDateString(
@@ -14,7 +16,8 @@ function RenderTransaction({ transaction }: { transaction: Transaction }) {
 					{transactedAt}
 				</small>
 			</div>
-			<span
+			<Link
+				href={`/transaction?id=${transaction.id}`}
 				className={cn(
 					transaction.type === 'income'
 						? 'text-green-600'
@@ -27,7 +30,9 @@ function RenderTransaction({ transaction }: { transaction: Transaction }) {
 					currency: 'BRL',
 					style: 'currency',
 				})}
-			</span>
+
+				<Edit size={16} className="inline ml-4" />
+			</Link>
 		</div>
 	)
 }

@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					</Button>
 
 					<Button size="icon" asChild>
-						<Link href="/new-transaction">
+						<Link href="/transaction">
 							<PlusCircle />
 						</Link>
 					</Button>
