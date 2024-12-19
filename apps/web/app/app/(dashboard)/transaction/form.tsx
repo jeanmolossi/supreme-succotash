@@ -20,7 +20,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import { GroupedCategory } from './parsers'
 import { useAction } from 'next-safe-action/hooks'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircle, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { formatDateInput } from '@/lib/helpers/dates'
 import { Transaction } from '@/lib/types/entities/transaction'
@@ -41,7 +41,7 @@ export default function NewTransactionForm({
 	const router = useRouter()
 
 	const [type, setType] = useState<'credit' | 'income' | 'outcome'>(
-		transaction?.type || 'outcome',
+		transaction?.type || 'credit',
 	)
 	const [account, setAccount] = useState(
 		transaction?.bank_account_id || bankAccounts.at(0)?.id || '',
@@ -222,22 +222,18 @@ export default function NewTransactionForm({
 			</div>
 
 			<div>
-				{/* @ts-expect-error onValueChange has value as string, but setType expects static types 'income' | 'outcome' */}
-				<ToggleGroup type="single" onValueChange={setType} value={type}>
-					<ToggleGroupItem
-						value="credit"
-						name="type"
-						variant="default"
-						className="min-w-36 border"
-					>
-						Crédito
-					</ToggleGroupItem>
-
+				<ToggleGroup
+					type="single"
+					// @ts-expect-error onValueChange has value as string, but setType expects static types 'income' | 'outcome'
+					onValueChange={setType}
+					value={type}
+					className="grid grid-cols-3"
+				>
 					<ToggleGroupItem
 						value="income"
 						name="type"
 						variant="success"
-						className="min-w-36 border"
+						className="min-w-28 md:min-w-36 border"
 					>
 						Entrada
 					</ToggleGroupItem>
@@ -246,16 +242,30 @@ export default function NewTransactionForm({
 						value="outcome"
 						name="type"
 						variant="destructive"
-						className="min-w-36 border"
+						className="min-w-28 md:min-w-36 border"
 					>
 						Saída
+					</ToggleGroupItem>
+
+					<ToggleGroupItem
+						value="credit"
+						name="type"
+						variant="default"
+						className="min-w-28 md:min-w-36 border"
+					>
+						Crédito
 					</ToggleGroupItem>
 				</ToggleGroup>
 			</div>
 
 			<div className="flex justify-end w-full">
 				<Button size="lg" disabled={isLoading}>
-					{isLoading && <LoaderCircle className="animate-spin" />}
+					{isLoading ? (
+						<LoaderCircle className="animate-spin" />
+					) : (
+						<Save size={18} />
+					)}
+
 					{transaction?.id ? 'Salvar' : 'Adicionar'}
 				</Button>
 			</div>
