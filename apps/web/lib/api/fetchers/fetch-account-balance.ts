@@ -1,15 +1,10 @@
-import { getLoggedUser } from '@/lib/auth/helpers'
 import { BankAccountBalance } from '@/lib/types/entities/bank-account'
 import { API_DOMAIN } from '@local/utils'
+import { authFetch } from './auth-fetch'
 
 export async function fetchAccountBalance() {
-	const user = await getLoggedUser()
-	const query = new URLSearchParams({
-		family_id: user.family_id,
-	})
-
-	const accountBalances = await fetch(
-		`${API_DOMAIN}/bank-accounts/balances?${query.toString()}`,
+	const accountBalances = await authFetch(
+		`${API_DOMAIN}/bank-accounts/balances`,
 	)
 		.then(async res => {
 			if (!res.ok) {
@@ -25,4 +20,10 @@ export async function fetchAccountBalance() {
 		})
 
 	return accountBalances as BankAccountBalance[]
+}
+
+export async function fetchAccounts() {
+	return await authFetch(`${API_DOMAIN}/bank-accounts`).then(res =>
+		res.json(),
+	)
 }

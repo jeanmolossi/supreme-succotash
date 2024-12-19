@@ -1,17 +1,9 @@
-import { API_DOMAIN } from '@local/utils'
 import NewCategoryForm from './form'
-import { getLoggedUser } from '@/lib/auth/helpers'
 import { groupCategories } from './parsers'
-
-async function getFamilyCategories(familyID: string) {
-	return await fetch(`${API_DOMAIN}/categories?family_id=${familyID}`).then(
-		res => res.json(),
-	)
-}
+import { fetchCategories } from '@/lib/api/fetchers/fetch-categories'
 
 export default async function NewTransactionPage() {
-	const user = await getLoggedUser()
-	const categories = await getFamilyCategories(user.family_id)
+	const categories = await fetchCategories()
 
 	return (
 		<div>

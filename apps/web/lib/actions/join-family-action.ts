@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
 import { STATUS_NO_CONTENT } from '../api/codes'
+import { authFetch } from '../api/fetchers/auth-fetch'
 
 export const joinFamilyAction = authActionClient
 	.schema(
@@ -19,10 +20,13 @@ export const joinFamilyAction = authActionClient
 			const body = new FormData()
 			body.append('family_id', family_id)
 
-			const error = await fetch(`${API_DOMAIN}/users/${user.id}/join`, {
-				method: 'PATCH',
-				body,
-			}).then(async res => {
+			const error = await authFetch(
+				`${API_DOMAIN}/users/${user.id}/join`,
+				{
+					method: 'PATCH',
+					body,
+				},
+			).then(async res => {
 				if (res.status !== STATUS_NO_CONTENT) {
 					const result = await res.json()
 					if ('error' in result) {

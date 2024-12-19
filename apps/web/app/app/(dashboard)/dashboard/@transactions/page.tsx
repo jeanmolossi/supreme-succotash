@@ -21,7 +21,9 @@ function RenderTransaction({ transaction }: { transaction: Transaction }) {
 				className={cn(
 					transaction.type === 'income'
 						? 'text-green-600'
-						: 'text-destructive',
+						: transaction.type === 'credit'
+							? 'text-gray-600'
+							: 'text-destructive',
 					'font-medium text-right',
 				)}
 			>

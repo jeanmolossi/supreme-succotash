@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
+import { authFetch } from '../api/fetchers/auth-fetch'
 
 export const addCategoryAction = authActionClient
 	.schema(
@@ -25,7 +26,7 @@ export const addCategoryAction = authActionClient
 				body.append('parent_id', parent_id)
 			}
 
-			const error = await fetch(`${API_DOMAIN}/categories`, {
+			const error = await authFetch(`${API_DOMAIN}/categories`, {
 				method: 'POST',
 				body,
 			})

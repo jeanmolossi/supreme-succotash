@@ -40,7 +40,7 @@ export default function NewTransactionForm({
 }: NewTransactionFormProps) {
 	const router = useRouter()
 
-	const [type, setType] = useState<'income' | 'outcome'>(
+	const [type, setType] = useState<'credit' | 'income' | 'outcome'>(
 		transaction?.type || 'outcome',
 	)
 	const [account, setAccount] = useState(

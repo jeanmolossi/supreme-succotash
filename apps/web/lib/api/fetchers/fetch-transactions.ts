@@ -1,21 +1,9 @@
-import { getLoggedUser } from '@/lib/auth/helpers'
 import { Transaction } from '@/lib/types/entities/transaction'
 import { API_DOMAIN } from '@local/utils'
-import { redirect } from 'next/navigation'
+import { authFetch } from './auth-fetch'
 
 export async function fetchTransactions() {
-	const user = await getLoggedUser()
-	if (!user) {
-		redirect('/')
-	}
-
-	const query = new URLSearchParams({
-		family_id: user.family_id,
-	})
-
-	const transactions = await fetch(
-		`${API_DOMAIN}/transactions?${query.toString()}`,
-	)
+	const transactions = await authFetch(`${API_DOMAIN}/transactions`)
 		.then(async res => {
 			if (!res.ok) {
 				console.error('Get transactions was not Ok', await res.text())
@@ -39,4 +27,23 @@ export async function fetchTransactions() {
 		total: number
 		transactions: Transaction[]
 	}
+}
+
+export async function fetchTransaction(transactionID: string) {
+	return await authFetch(`${API_DOMAIN}/transactions/${transactionID}`)
+		.then(async res => {
+			if (!res.ok) {
+				console.error(
+					'Failed to retrieve transaction',
+					await res.text(),
+				)
+				return null
+			}
+
+			return res.json()
+		})
+		.catch(err => {
+			console.error('Failed to fetch transaction', err)
+			return null
+		})
 }

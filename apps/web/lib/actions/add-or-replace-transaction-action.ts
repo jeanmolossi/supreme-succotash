@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
 import { parseISO } from 'date-fns'
+import { authFetch } from '../api/fetchers/auth-fetch'
 
 export const addOrReplaceTransactionAction = authActionClient
 	.schema(
@@ -55,10 +56,13 @@ export const addOrReplaceTransactionAction = authActionClient
 			const resource = isReplace ? `/${id}` : ''
 			const method = isReplace ? 'PUT' : 'POST'
 
-			const error = await fetch(`${API_DOMAIN}/transactions${resource}`, {
-				method,
-				body,
-			})
+			const error = await authFetch(
+				`${API_DOMAIN}/transactions${resource}`,
+				{
+					method,
+					body,
+				},
+			)
 				.then(async res => {
 					if (!res.ok) {
 						const result = await res.json()

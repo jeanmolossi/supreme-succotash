@@ -1,6 +1,5 @@
 import { createSafeActionClient } from 'next-safe-action'
 import { getSession } from '../auth/helpers'
-import { getUserByID } from '../middleware/helpers'
 
 export const actionClient = createSafeActionClient({
 	handleServerError(error, utils) {

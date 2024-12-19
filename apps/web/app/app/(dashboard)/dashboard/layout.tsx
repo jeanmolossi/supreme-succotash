@@ -2,6 +2,7 @@ import { Button } from '@local/ui'
 import { PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
+import Logout from './logout-button'
 
 export default function DashboardLayout({
 	children,
@@ -14,12 +15,14 @@ export default function DashboardLayout({
 }) {
 	return (
 		<div className="relative space-y-3">
-			<nav className="sticky shadow-black shadow-md rounded flex items-center gap-4">
+			<nav className="sticky shadow-black shadow-md rounded flex items-center justify-between gap-4">
 				<Button asChild variant={'link'}>
 					<Link href="/new-category">
 						<PlusCircle /> Categoria
 					</Link>
 				</Button>
+
+				<Logout />
 			</nav>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-2">

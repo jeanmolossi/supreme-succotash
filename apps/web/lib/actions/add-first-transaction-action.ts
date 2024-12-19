@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
+import { authFetch } from '../api/fetchers/auth-fetch'
 
 export const addTransactionAction = authActionClient
 	.schema(
@@ -37,7 +38,7 @@ export const addTransactionAction = authActionClient
 			body.append('category_id', await categoryPromise)
 			body.append('description', 'Primeira transação')
 
-			const error = await fetch(`${API_DOMAIN}/transactions`, {
+			const error = await authFetch(`${API_DOMAIN}/transactions`, {
 				method: 'POST',
 				body,
 			})

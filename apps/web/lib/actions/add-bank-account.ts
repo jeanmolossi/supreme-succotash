@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { authActionClient } from './safe-action'
 import { API_DOMAIN } from '@local/utils'
 import { STATUS_OK } from '../api/codes'
+import { authFetch } from '../api/fetchers/auth-fetch'
 
 export const addBankAccountAction = authActionClient
 	.schema(
@@ -30,7 +31,7 @@ export const addBankAccountAction = authActionClient
 			body.append('name', accountName)
 			body.append('initial_value', rawValue.toString())
 
-			const error = await fetch(`${API_DOMAIN}/bank-accounts`, {
+			const error = await authFetch(`${API_DOMAIN}/bank-accounts`, {
 				method: 'POST',
 				body,
 			})

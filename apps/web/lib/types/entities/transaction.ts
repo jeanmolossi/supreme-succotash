@@ -7,7 +7,7 @@ interface BaseTransaction {
 	user_id: string
 	bank_account_id: string
 	category_id: string
-	type: 'income' | 'outcome'
+	type: 'credit' | 'income' | 'outcome'
 	description: string
 	amount: number
 }
