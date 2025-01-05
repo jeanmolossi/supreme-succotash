@@ -1,4 +1,4 @@
-import { BankAccountBalance } from '@/lib/types/entities/bank-account'
+import { BankAccount, BankAccountBalance } from '@/lib/types/entities/bank-account'
 import { API_DOMAIN } from '@local/utils'
 import { authFetch } from './auth-fetch'
 
@@ -22,7 +22,7 @@ export async function fetchAccountBalance() {
 	return accountBalances as BankAccountBalance[]
 }
 
-export async function fetchAccounts() {
+export async function fetchAccounts(): Promise<BankAccount[]> {
 	return await authFetch(`${API_DOMAIN}/bank-accounts`).then(res =>
 		res.json(),
 	)

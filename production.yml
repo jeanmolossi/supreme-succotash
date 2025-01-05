@@ -4,13 +4,14 @@ services:
         hostname: app01
         environment:
             NEXT_PUBLIC_VERCEL_ENV: production
+            NEXT_PUBLIC_ENV: production
         networks:
             - lb_network
         deploy:
             resources:
                 limits:
-                    cpus: '0.95'
-                    memory: '4GB'
+                    cpus: "0.95"
+                    memory: "4GB"
 
 networks:
     lb_network:

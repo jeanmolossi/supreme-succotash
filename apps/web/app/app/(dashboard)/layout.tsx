@@ -5,13 +5,13 @@ import React from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="grid min-h-screen grid-cols-1 relative">
-			<div className="max-w-screen-xl mx-auto w-full p-2 lg:p-4">
+		<div className="grid h-screen grid-cols-1 relative">
+			<div className="max-w-screen-xl mx-auto w-full p-2 lg:p-4 overflow-y-auto">
 				{children}
 			</div>
 
-			<div className="absolute bottom-0 w-full">
-				<div className="mx-auto flex gap-2 justify-center py-4">
+			<div className="w-full border-t">
+				<div className="mx-auto flex gap-2 justify-center py-2">
 					<Button size="icon" asChild variant="outline">
 						<Link href="/dashboard">
 							<Home />

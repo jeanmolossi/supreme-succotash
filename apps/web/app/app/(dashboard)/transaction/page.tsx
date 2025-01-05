@@ -3,6 +3,9 @@ import { groupCategories } from './parsers'
 import { fetchTransaction } from '@/lib/api/fetchers/fetch-transactions'
 import { fetchAccounts } from '@/lib/api/fetchers/fetch-account-balance'
 import { fetchCategories } from '@/lib/api/fetchers/fetch-categories'
+import { BankAccount } from '@/lib/types/entities/bank-account'
+import { Category } from '@/lib/types/entities/category'
+import { Transaction } from '@/lib/types/entities/transaction'
 
 interface TransactionPageProps {
 	searchParams: Promise<{
@@ -13,7 +16,7 @@ interface TransactionPageProps {
 export default async function TransactionPage({
 	searchParams,
 }: TransactionPageProps) {
-	const promises = [fetchAccounts(), fetchCategories()]
+	const promises: any = [fetchAccounts(), fetchCategories()]
 
 	const { id } = await searchParams
 	if (id) {
@@ -29,9 +32,9 @@ export default async function TransactionPage({
 			</h1>
 
 			<NewTransactionForm
-				bankAccounts={bankAccounts}
-				categories={groupCategories(categories)}
-				transaction={transaction}
+				bankAccounts={bankAccounts as BankAccount[]}
+				categories={groupCategories(categories as Category[])}
+				transaction={transaction as Transaction}
 			/>
 		</div>
 	)

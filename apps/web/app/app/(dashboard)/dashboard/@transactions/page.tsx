@@ -1,54 +1,64 @@
+import Credit from '@/components/transactions/credit'
+import Income from '@/components/transactions/income'
+import Outcome from '@/components/transactions/outcome'
+import { fetchAccounts } from '@/lib/api/fetchers/fetch-account-balance'
+import { fetchCategories } from '@/lib/api/fetchers/fetch-categories'
 import { fetchTransactions } from '@/lib/api/fetchers/fetch-transactions'
+import { BankAccount } from '@/lib/types/entities/bank-account'
+import { Category } from '@/lib/types/entities/category'
 import { Transaction } from '@/lib/types/entities/transaction'
-import { cn } from '@local/utils'
-import { Edit } from 'lucide-react'
-import Link from 'next/link'
 
-function RenderTransaction({ transaction }: { transaction: Transaction }) {
-	const transactedAt = new Date(transaction.transacted_at).toLocaleDateString(
-		'pt-BR',
-	)
-	return (
-		<div className="grid grid-cols-2 border-b py-1 mt-1 animate-slide-up-fade [animation-delay:250ms] [animation-duration:1s] [animation-fill-mode:both]">
-			<div className="grid grid-cols-2 items-baseline gap-2">
-				<span className="text-sm">{transaction.description}</span>
-				<small className="text-xs text-muted-foreground">
-					{transactedAt}
-				</small>
-			</div>
-			<Link
-				href={`/transaction?id=${transaction.id}`}
-				className={cn(
-					transaction.type === 'income'
-						? 'text-green-600'
-						: transaction.type === 'credit'
-							? 'text-gray-600'
-							: 'text-destructive',
-					'font-medium text-right',
-				)}
-			>
-				{transaction.type === 'income' ? '+ ' : '- '}
-				{transaction.amount.toLocaleString('pt-BR', {
-					currency: 'BRL',
-					style: 'currency',
-				})}
+const transactionComponent = {
+	'credit': Credit,
+	'outcome': Outcome,
+	'income': Income,
+}
 
-				<Edit size={16} className="inline ml-4" />
-			</Link>
-		</div>
-	)
+type WithCategory = { category: Category }
+type WithBankAccount = { bank_account: BankAccount }
+
+function RenderTransaction({ transaction }: { transaction: Transaction & WithCategory & WithBankAccount }) {
+	const Component = transactionComponent[transaction.type]
+
+	if (!Component) {
+		return (
+			<div>Tipo de transação não identificada</div>
+		)
+	}
+
+	return <Component transaction={transaction} />
 }
 
 export default async function TransactionPage() {
-	const { total, transactions } = await fetchTransactions()
+	const [{ total, transactions }, categories, accounts] = await Promise.all([
+		fetchTransactions(),
+		fetchCategories(),
+		fetchAccounts(),
+	])
+
+	const categoryMap = new Map(
+		categories.map(category => [category.id, category])
+	)
+
+	const accountMap = new Map(
+		accounts.map(account => [account.id, account])
+	)
+
+	const mappedTransactions: Array<Transaction & WithCategory & WithBankAccount> = transactions.map(
+		transaction => ({
+			...transaction,
+			category: categoryMap.get(transaction.category_id)!,
+			bank_account: accountMap.get(transaction.bank_account_id)!
+		})
+	)
 
 	return (
-		<div className="flex flex-col border p-2 rounded">
+		<div className="flex flex-col border p-2 rounded gap-2">
 			<span className="font-semibold my-2 animate-slide-up-fade [animation-delay:250ms] [animation-duration:1s] [animation-fill-mode:both]">
 				Você tem {total} transações
 			</span>
 
-			{transactions.map(transaction => (
+			{mappedTransactions.map(transaction => (
 				<RenderTransaction
 					key={transaction.id}
 					transaction={transaction}

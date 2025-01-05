@@ -9,17 +9,24 @@ services:
             - /app/node_modules
             - ./apps/web/node_modules:/app/apps/web/node_modules
             - .:/app
+        develop:
+            watch:
+                - action: sync
+                  path: .
+                  target: /app
+                  ignore:
+                      - node_modules/
         ports:
-            - '3000:3000'
+            - "3000:3000"
         command: pnpm run dev
         networks:
-            - family-finance-api_ff_net
+            - legendary-spoon_ff_net
         deploy:
             resources:
                 limits:
-                    cpus: '0.95'
-                    memory: '4GB'
+                    cpus: "0.95"
+                    memory: "4GB"
 
 networks:
-    family-finance-api_ff_net:
+    legendary-spoon_ff_net:
         external: true

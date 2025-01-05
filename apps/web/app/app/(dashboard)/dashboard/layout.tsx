@@ -22,6 +22,12 @@ export default function DashboardLayout({
 					</Link>
 				</Button>
 
+				<Button asChild variant={'link'}>
+					<Link href="/bank-account">
+						<PlusCircle /> Conta
+					</Link>
+				</Button>
+
 				<Logout />
 			</nav>
 

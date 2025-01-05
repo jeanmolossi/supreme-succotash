@@ -29,7 +29,7 @@ export async function fetchTransactions() {
 	}
 }
 
-export async function fetchTransaction(transactionID: string) {
+export async function fetchTransaction(transactionID: string): Promise<Transaction> {
 	return await authFetch(`${API_DOMAIN}/transactions/${transactionID}`)
 		.then(async res => {
 			if (!res.ok) {
