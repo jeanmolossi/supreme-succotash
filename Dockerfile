@@ -32,6 +32,7 @@ COPY --from=deps /app/packages/ui/node_modules ./packages/ui/node_modules/
 COPY --from=deps /app/packages/utils/node_modules ./packages/utils/node_modules/
 COPY apps/web/.env.production.local ./apps/web/.env
 COPY . .
+RUN rm ./apps/web/.env.*
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
