@@ -32,8 +32,7 @@ export default function RootLayout({
 			<body className={cn(inter.variable, nunitoSans.variable)}>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="system"
-					enableSystem
+					defaultTheme="light"
 				>
 					{children}
 					<Toaster />

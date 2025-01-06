@@ -3,6 +3,7 @@ import './styles.css'
 // components
 export * from './button'
 export * from './card'
+export * from './chart'
 export * from './wordmark'
 export * from './input'
 export * from './label'
