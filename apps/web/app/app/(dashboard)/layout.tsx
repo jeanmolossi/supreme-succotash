@@ -6,8 +6,10 @@ import React from 'react'
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="grid h-screen grid-cols-1 relative">
-			<div className="max-w-screen-xl mx-auto w-full p-2 lg:p-4 overflow-y-auto">
-				{children}
+			<div className="w-full p-2 lg:p-4 overflow-y-auto">
+				<div className='max-w-screen-xl mx-auto '>
+					{children}
+				</div>
 			</div>
 
 			<div className="w-full border-t">
