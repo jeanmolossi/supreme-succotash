@@ -29,9 +29,18 @@ function RenderTransaction({ transaction }: { transaction: Transaction & WithCat
 	return <Component transaction={transaction} />
 }
 
-export default async function TransactionPage() {
+interface TransactionsPageProps {
+	searchParams?: Promise<{
+		category_id?: string;
+	}>
+}
+
+export default async function TransactionPage({ searchParams }: TransactionsPageProps) {
+	const urlSearchParams = await searchParams || {}
+	const { category_id } = urlSearchParams
+
 	const [{ total, transactions }, categories, accounts] = await Promise.all([
-		fetchTransactions(),
+		fetchTransactions({ category_id }),
 		fetchCategories(),
 		fetchAccounts(),
 	])

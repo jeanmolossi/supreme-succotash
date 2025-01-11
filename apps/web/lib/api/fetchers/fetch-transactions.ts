@@ -2,8 +2,22 @@ import { Transaction } from '@/lib/types/entities/transaction'
 import { API_DOMAIN } from '@local/utils'
 import { authFetch } from './auth-fetch'
 
-export async function fetchTransactions() {
-	const transactions = await authFetch(`${API_DOMAIN}/transactions`)
+interface TransactionFilters {
+	category_id?: string
+}
+
+export async function fetchTransactions({ category_id }: TransactionFilters) {
+	let query = ''
+	const searchParams = new URLSearchParams()
+	if (category_id) {
+		searchParams.append('category_id', category_id)
+	}
+
+	if (searchParams.size > 0) {
+		query = `?${searchParams.toString()}`
+	}
+
+	const transactions = await authFetch(`${API_DOMAIN}/transactions${query}`)
 		.then(async res => {
 			if (!res.ok) {
 				console.error('Get transactions was not Ok', await res.text())

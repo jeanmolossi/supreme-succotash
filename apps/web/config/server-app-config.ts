@@ -1,5 +1,3 @@
-import './env-config'
-
 const serverAppConfig = {
 	NODE_ENV: process.env.NODE_ENV || 'development',
 

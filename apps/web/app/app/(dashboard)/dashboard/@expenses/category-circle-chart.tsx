@@ -21,8 +21,9 @@ import {
 } from "@local/ui"
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart, LabelList } from "recharts"
 import DateRangePicker from "./date-range-picker";
+import { someColor } from "@/lib/helpers";
 
 interface CategoryCircleChartProps extends ExpensesResponse {
 	categories: Category[]
@@ -95,8 +96,14 @@ export default function CategoryCircleChart({
 						className="mx-auto aspect-square max-h-[320px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
 					>
 						<PieChart>
-							<ChartTooltip content={<ChartTooltipContent hideLabel />} />
-							<Pie data={data} dataKey="total" nameKey="category" label />
+							<ChartTooltip content={<ChartTooltipContent hideLabel nameKey="category" />} />
+							<Pie data={data} dataKey="total">
+								<LabelList
+									dataKey={"category"}
+									className="fill-background"
+									stroke="none"
+								/>
+							</Pie>
 						</PieChart>
 					</ChartContainer>
 				)}
@@ -108,10 +115,6 @@ export default function CategoryCircleChart({
 			</CardFooter>
 		</Card>
 	)
-}
-
-function someColor() {
-	return `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`;
 }
 
 function getChartInfo(expenses: ExpensesResponse['expenses']) {

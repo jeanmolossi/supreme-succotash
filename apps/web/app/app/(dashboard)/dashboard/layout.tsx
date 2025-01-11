@@ -9,11 +9,13 @@ export default function DashboardLayout({
 	transactions,
 	accounts,
 	expenses,
+	monthComparision,
 }: {
 	children: React.ReactNode
 	transactions: React.ReactNode
 	accounts: React.ReactNode
 	expenses: React.ReactNode
+	monthComparision: React.ReactNode
 }) {
 	return (
 		<div className="relative space-y-3">
@@ -35,6 +37,7 @@ export default function DashboardLayout({
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
 				<div>{expenses}</div>
+				<div>{monthComparision}</div>
 				<div>{accounts}</div>
 				<div>{transactions}</div>
 				<div>{children}</div>
