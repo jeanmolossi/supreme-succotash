@@ -110,6 +110,10 @@ function extractConfigAndData(expenses: ExpensesResponse, compare: ExpensesRespo
 	expenses.expenses.forEach(expense => {
 		const comparer = compareMap.get(expense.category_id)
 
+		if (comparer?.total == expense.total && expense.total == 0) {
+			return
+		}
+
 		data.push({
 			category: expense.category_id,
 			label: expense.category,
