@@ -1,30 +1,10 @@
 'use client';
 
-import { TrendingUp, X } from "lucide-react";
+import { TrendingDown, TrendingUp, X } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@local/ui";
-import { getMonth } from 'date-fns'
 import { ExpensesResponse } from "@/lib/api/fetchers/fetch-categories";
-import { someColor, toBRL } from "@/lib/helpers";
-
-const chartData = [
-	{ month: "Delivery", dezembro: 186, janeiro: 80 },
-	{ month: "Gastos pessoais", dezembro: 305, janeiro: 200 },
-	{ month: "Casa", dezembro: 237, janeiro: 120 },
-	{ month: "April", dezembro: 73, janeiro: 190 },
-	{ month: "May", dezembro: 209, janeiro: 130 },
-	{ month: "June", dezembro: 214, janeiro: 140 },
-]
-const chartConfig = {
-	dezembro: {
-		label: "Dezembro",
-		color: "hsl(var(--chart-1))",
-	},
-	janeiro: {
-		label: "Janeiro",
-		color: "hsl(var(--chart-2))",
-	},
-} satisfies ChartConfig
+import { toBRL } from "@/lib/helpers";
 
 interface ComparisionBarChartProps {
 	baseExpenses: ExpensesResponse;
@@ -36,19 +16,14 @@ export default function ComparisionBarChart({
 	comparitionExpenses,
 }: ComparisionBarChartProps) {
 	const { config, data } = extractConfigAndData(baseExpenses, comparitionExpenses)
-	const { base, compare, baseTotal, compareTotal } = {
+	const { base, compare, baseTotal, compareTotal, isUp } = {
 		base: baseExpenses.meta.month,
 		compare: comparitionExpenses.meta.month,
 
 		baseTotal: toBRL(baseExpenses.meta.total),
 		compareTotal: toBRL(comparitionExpenses.meta.total),
+		isUp: baseExpenses.meta.total >= comparitionExpenses.meta.total,
 	}
-
-
-	console.log(
-		baseExpenses.meta.month,
-		comparitionExpenses.meta.month
-	)
 
 	return (
 		<Card>
@@ -76,14 +51,24 @@ export default function ComparisionBarChart({
 				</ChartContainer>
 			</CardContent>
 
-			<CardFooter>
+			<CardFooter className="grid gap-2">
 				<span className="text-sm text-muted-foreground">
-					Comparação entre o mês de {compare} com {base} <TrendingUp className="inline ml-2" size={14} />
+					Comparação entre os mêses de {compare} e {base}.
+					Vocês tiveram {isUp
+						? <>um <span className="text-destructive font-medium">aumento</span> de gastos</>
+						: <>uma <span className="text-green-600 font-medium">redução</span> de gastos</>
+					}
 				</span>
 
-				<div className="flex gap-2 text-sm">
-					<span>Gastos de {base}: {baseTotal}</span>
+				<div className="grid grid-cols-[1fr,1rem,1fr] gap-2 text-sm text-center">
 					<span>Gastos de {compare}: {compareTotal}</span>
+					<span className="grid place-items-center">
+						{isUp
+							? (<TrendingUp className="text-destructive" size={22} />)
+							: (<TrendingDown className="text-green-600" size={22} />)
+						}
+					</span>
+					<span>Gastos de {base}: {baseTotal}</span>
 				</div>
 			</CardFooter>
 		</Card>
