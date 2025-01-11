@@ -2,7 +2,19 @@
 
 import { TrendingDown, TrendingUp, X } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@local/ui";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
+	ChartTooltip,
+	ChartTooltipContent
+} from "@local/ui";
 import { ExpensesResponse } from "@/lib/api/fetchers/fetch-categories";
 import { toBRL } from "@/lib/helpers";
 
@@ -33,16 +45,17 @@ export default function ComparisionBarChart({
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={config}>
-					<BarChart accessibilityLayer data={data}>
+					<BarChart accessibilityLayer data={data} >
 						<CartesianGrid vertical={false} />
 						<XAxis
 							dataKey="label"
 							tickLine={false}
 							tickMargin={10}
 							axisLine={false}
+							tickFormatter={(value) => formatLabel(value, 5)}
 						/>
 						<ChartTooltip
-							content={<ChartTooltipContent indicator="dashed" />}
+							content={<ChartTooltipContent indicator="line" />}
 						/>
 						<ChartLegend content={<ChartLegendContent />} />
 						<Bar dataKey={compare} fill={`var(--color-${compare})`} radius={4} />
@@ -86,7 +99,7 @@ function extractConfigAndData(expenses: ExpensesResponse, compare: ExpensesRespo
 			color: "hsl(var(--chart-1))",
 		}
 	} as any
-	const data = [] as any
+	const data = [] as Array<{ label: string, category: string }>
 
 	const compareMap = new Map(
 		compare.expenses.map((expense) => [expense.category_id, expense])
@@ -107,5 +120,20 @@ function extractConfigAndData(expenses: ExpensesResponse, compare: ExpensesRespo
 		})
 	})
 
-	return { config, data }
+	const sorted = data.sort(
+		(a, b) => {
+			return a.label.charCodeAt(0) - b.label.charCodeAt(0)
+		}
+	)
+
+	return { config, data: sorted }
+}
+
+function formatLabel(label: string, length: number = 5) {
+	if (label.length <= length) {
+		return label
+	}
+
+	label = label.split(' ')[0]
+	return label.substring(0, length) + '..'
 }

@@ -96,8 +96,8 @@ export default function CategoryCircleChart({
 						className="mx-auto aspect-square max-h-[320px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
 					>
 						<PieChart>
-							<ChartTooltip content={<ChartTooltipContent hideLabel nameKey="category" />} />
-							<Pie data={data} dataKey="total">
+							<ChartTooltip content={<ChartTooltipContent hideLabel nameKey="category" indicator="dot" />} />
+							<Pie data={data} dataKey="total" nameKey="category">
 								<LabelList
 									dataKey={"category"}
 									className="fill-background"
