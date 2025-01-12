@@ -1,11 +1,11 @@
 import { Button } from '@local/ui'
-import { Home, PlusCircle } from 'lucide-react'
+import { Home, PlusCircle, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="grid h-screen grid-cols-1 relative">
+		<div className="grid h-screen grid-cols-1 grid-rows-[1fr,auto] relative">
 			<div className="w-full p-2 lg:p-4 overflow-y-auto">
 				<div className='max-w-screen-xl mx-auto '>
 					{children}
@@ -17,6 +17,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<Button size="icon" asChild variant="outline">
 						<Link href="/dashboard">
 							<Home />
+						</Link>
+					</Button>
+
+					<Button size="icon" asChild variant="outline">
+						<Link href="/key-results">
+							<TrendingUp />
 						</Link>
 					</Button>
 

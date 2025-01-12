@@ -12,3 +12,20 @@ export function formatCurrency(value: string) {
 
 	return formatted
 }
+
+export function currencyToFloat(value: string): number {
+	if (!value) {
+		return 0
+	}
+
+	const raw = value
+		.replace(/\D/g, '')
+		.replaceAll('.', '')
+		.replaceAll(',', '.')
+
+	return parseFloat(raw)
+}
+
+export function centsToIntBRL(value: number): number {
+	return Math.floor(value / 100)
+}
