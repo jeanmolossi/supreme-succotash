@@ -1,7 +1,10 @@
-import { fetchCategories, fetchExpenses } from "@/lib/api/fetchers/fetch-categories"
-import CategoryCircleChart from "./category-circle-chart"
-import DateRangePicker from "./date-range-picker"
-import { endOfDay, setDate, startOfDay, subMonths } from "date-fns"
+import {
+	fetchCategories,
+	fetchExpenses,
+} from '@/lib/api/fetchers/fetch-categories'
+import CategoryCircleChart from './category-circle-chart'
+import DateRangePicker from './date-range-picker'
+import { addMonths, endOfDay, setDate, startOfDay, subMonths } from 'date-fns'
 
 interface ExpensesPageParams {
 	searchParams: Promise<{
@@ -11,29 +14,37 @@ interface ExpensesPageParams {
 	}>
 }
 
-export default async function ExpensesPage({ searchParams }: ExpensesPageParams) {
-	let [
-		{ category_id = '', from = '', until = '' },
-		categories,
-	] = await Promise.all([
-		searchParams,
-		fetchCategories({ root_categories: 1 }),
-	])
+export default async function ExpensesPage({
+	searchParams,
+}: ExpensesPageParams) {
+	let [{ category_id = '', from = '', until = '' }, categories] =
+		await Promise.all([
+			searchParams,
+			fetchCategories({ root_categories: 1 }),
+		])
+
+	const turnMonthDate = 28
 
 	const today = new Date()
-	let fromDate: Date | undefined,
-		untilDate: Date | undefined;
+	let fromDate: Date | undefined, untilDate: Date | undefined
+
+	const nextMonth = today.getDate() >= turnMonthDate ? 1 : 0
 
 	if (from) {
 		fromDate = startOfDay(from)
 	} else {
-		fromDate = startOfDay(subMonths(setDate(today, 28), 1))
+		fromDate = startOfDay(
+			subMonths(setDate(today, turnMonthDate), 1 - nextMonth),
+		)
 	}
 
 	if (until) {
 		untilDate = endOfDay(until)
 	} else {
-		untilDate = endOfDay(setDate(today, 28))
+		untilDate = addMonths(
+			endOfDay(setDate(today, turnMonthDate)),
+			nextMonth,
+		)
 	}
 
 	const { expenses, meta } = await fetchExpenses({
@@ -45,8 +56,15 @@ export default async function ExpensesPage({ searchParams }: ExpensesPageParams)
 
 	return (
 		<div>
-			<DateRangePicker from={fromDate.toISOString()} to={untilDate.toISOString()} />
-			<CategoryCircleChart expenses={expenses} meta={meta} categories={categories} />
+			<DateRangePicker
+				from={fromDate.toISOString()}
+				to={untilDate.toISOString()}
+			/>
+			<CategoryCircleChart
+				expenses={expenses}
+				meta={meta}
+				categories={categories}
+			/>
 		</div>
 	)
 }
