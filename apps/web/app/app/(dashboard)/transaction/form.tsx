@@ -22,7 +22,10 @@ import { GroupedCategory } from './parsers'
 import { useAction } from 'next-safe-action/hooks'
 import { LoaderCircle, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { formatDateInput } from '@/lib/helpers/dates'
+import {
+	formatDateInput,
+	formatDateInputWithTimezone,
+} from '@/lib/helpers/dates'
 import { Transaction } from '@/lib/types/entities/transaction'
 import { formatCurrency } from '@/lib/helpers/currency'
 import { addOrReplaceTransactionAction } from '@/lib/actions/add-or-replace-transaction-action'
@@ -55,7 +58,9 @@ export default function NewTransactionForm({
 		formatCurrency(transaction?.amount.toFixed(2) || ''),
 	)
 	const [transactedAt, setTransactedAt] = useState(
-		formatDateInput(transaction?.transacted_at || new Date()),
+		transaction?.transacted_at
+			? formatDateInputWithTimezone(transaction?.transacted_at)
+			: formatDateInput(new Date()),
 	)
 
 	const { executeAsync, hasSucceeded, isExecuting } = useAction(
