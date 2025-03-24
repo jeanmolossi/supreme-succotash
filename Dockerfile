@@ -1,5 +1,7 @@
 FROM node:22.9.0-alpine3.20 AS base
 
+RUN npm install -g corepack@latest
+
 # Install dependencies only when needed
 FROM base AS deps
 
